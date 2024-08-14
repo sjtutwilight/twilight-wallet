@@ -1,0 +1,22 @@
+{
+  "name": "twilight-wallet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.7"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "file-saver": "^2.0.5",
+    "kafka-node": "^5.0.0",
+    "pg": "^8.12.0"
+  }
+}
