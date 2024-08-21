@@ -4,7 +4,7 @@ const { KafkaClient, Producer, Consumer } = require('kafka-node');
 const { Client } = require('pg');
 const { ethers } = require('ethers');
 const cors = require('cors');
-
+console.log(111111);
 const app = express();
 const port = 3000;
 app.use(cors()); // Allow all origins by default
@@ -23,13 +23,15 @@ const kafkaClient = new KafkaClient({ kafkaHost: 'kafka:9092' });
 const producer = new Producer(kafkaClient);
 
 // Listen to Ethereum blocks and send transactions to Kafka
-const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
+const provider = new ethers.providers.JsonRpcProvider("http://host.docker.internal:8545");
+console.log(provider);
 const consumer = new Consumer(
     kafkaClient,
     [{ topic: 'transactions', partition: 0 }],
     { autoCommit: true }
 );
 provider.on('block', async (blockNumber) => {
+
     const block = await provider.getBlockWithTransactions(blockNumber);
     block.transactions.forEach((tx) => {
         const transaction = {
@@ -39,8 +41,9 @@ provider.on('block', async (blockNumber) => {
             value: ethers.utils.formatEther(tx.value),
             blockNumber: tx.blockNumber,
             timestamp: block.timestamp,
+            
         };
-
+        console.log(tx)
         const payloads = [
             {
                 topic: 'transactions',
@@ -56,6 +59,7 @@ provider.on('block', async (blockNumber) => {
             }
         });
     });
+
 });
 
 consumer.on('error', (err) => {
@@ -116,8 +120,9 @@ app.get('/api/transactions', async (req, res) => {
     console.log('Query Values:', values);
 
     try {
-        const result = await pgClient.query(query, values);
-        res.json(result.rows);
+       const result = await pgClient.query(query, values);
+       res.json(result.rows);
+     
     } catch (error) {
         console.error('Error fetching transactions:', error);
         res.status(500).json({ error: 'Internal server error' });

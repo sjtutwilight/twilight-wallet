@@ -1,6 +1,11 @@
 version: '3.8'
 
 services:
+  # hardhat-node:
+  #   build: .
+  #   container_name: hardhat-node
+  #   ports:
+  #     - "8545:8545"
   zookeeper:
     image: bitnami/zookeeper:3.9.2
     container_name: zookeeper
@@ -45,6 +50,6 @@ services:
       - kafka
     environment:
       DATABASE_URL: postgres://postgres:123456@postgres:5432/yangguang
-
+ 
 volumes:
   pgdata:

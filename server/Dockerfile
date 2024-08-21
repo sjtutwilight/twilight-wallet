@@ -1,7 +1,7 @@
 # server/Dockerfile
 
 # Use Node.js 14 as the base image
-FROM node:14
+FROM node:20
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
